@@ -1,13 +1,13 @@
 import socket,time,threading
 
 
-def tcplink(sock, addr):
+def tcpLink(sock, addr):
     print('Accept new connection from %s:%s...' % addr)
-    sock.send('Welcome!'.encode())
+    sock.send('Welcome!'.encode())  # 当有新的连接到来时，向其回复Welcome!
     while True:
-        data = sock.recv(1024)
+        data = sock.recv(1024).decode()      # 单次最多接收 1K 
         time.sleep(1)
-        if data == 'exit' or not data:
+        if data == 'exit':
             break
         print('RECV: %s' % data)
     sock.close()
@@ -23,5 +23,5 @@ while True:
     # 接受一个新连接:
     sock, addr = s.accept()
     # 创建新线程来处理TCP连接:
-    t = threading.Thread(target=tcplink, args=(sock, addr))
+    t = threading.Thread(target=tcpLink, args=(sock, addr))
     t.start()
